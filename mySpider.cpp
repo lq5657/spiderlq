@@ -1,8 +1,8 @@
 #include "qURL.h"
 #include "qThread.h"
 #include "qSocket.h"
-#include "qThreadpool.h"
 #include "qHttpRespond.h"
+#include "qThreadpool.h"
 #include "qCommon.h"
 
 #include <cstdio>
@@ -106,7 +106,7 @@ int main()
     /* create thread pool */
     qThreadpool<qHttpRespond>* pool = NULL;
     try{
-        pool = new qThreadpool<qHttpRespond>();
+        pool = new qThreadpool<qHttpRespond>;
     } catch(...) {
         return 1;
     }
@@ -133,7 +133,7 @@ int main()
             epoll_arg_t* arg = (epoll_arg_t*)(events[i].data.ptr);
             if( ((events[i].events & EPOLLERR) ||
                (events[i].events & EPOLLHUP) ||
-               (!events[i].events & EPOLLIN)) ){
+            (!(events[i].events & EPOLLIN))) ){
                 printf("epoll fail, close socket %d\n", arg->fd);
 
                 close(arg->fd);
