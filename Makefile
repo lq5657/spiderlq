@@ -1,7 +1,6 @@
 #Makefile for simple programs
 ##################################################
-PRGM = mySpider  
-LIBDIR = /usr/lib  
+PRGM = mySpider
 CC = gcc  
 CPPFLAGS =  
 CFLAGS = -Wall -g `pkg-config --cflags glib-2.0`  
@@ -9,7 +8,7 @@ CCOMPILE = $(CC) $(CPPFLAGS) $(CFLAGS) -c
 CXX = g++  
 CXXFLAGS = -Wall -g `pkg-config --cflags glib-2.0`  
 CXXCOMPILE = $(CXX) $(CXXFLAGS) -c  
-LDFLAGS = -L$(LIBDIR) -lpthread -levent -lgumbo 
+LDFLAGS = `pkg-config --libs glib-2.0` -lpthread -levent -lgumbo 
 LINKCXX = $(LDFLAGS)  
 CSRCS := $(wildcard *.)  
 COBJS := $(patsubst %.c,%.o,$(CSRCS))  
@@ -17,7 +16,7 @@ CXXSRCS := $(wildcard *.cpp)
 CXXOBJS := $(patsubst %.cpp,%.o,$(CXXSRCS))  
 OBJS = $(COBJS) $(CXXOBJS)  
 $(PRGM):$(OBJS)  
-	$(CXX) $(OBJS) $(LINKCXX) -o $(PRGM) 
+	$(CXX) -o $(PRGM) $(OBJS) $(LINKCXX)
 %.o:%.c  
 	$(CCOMPILE) $< -o $@  
 %o:%.cpp  

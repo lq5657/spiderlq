@@ -29,4 +29,4 @@ private:
     struct parseURL_t* pUrl_;     /* respond page's url information */
 };
 
-#endif
+#endif /*_Q_HTTP_RESPOND_H_*/

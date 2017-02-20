@@ -1,5 +1,5 @@
-#ifndef _Q_THREAD_POLL_H_
-#define _Q_THREAD_POLL_H_
+#ifndef _Q_THREAD_POOL_H_
+#define _Q_THREAD_POOL_H_
 
 #include <list>
 #include <cstdio>
@@ -10,11 +10,11 @@
 
 /* thread poll template class */
 template<typename T>
-class qThreadpoll
+class qThreadpool
 {
 public:
-    qThreadpoll(int threadNum_ = 5, int maxRequests_ = 10000);
-    ~qThreadpoll();
+    qThreadpool(int threadNum = 2, int maxRequests = 10000);
+    ~qThreadpool();
     bool append(T* request);
 
 private:
@@ -22,7 +22,7 @@ private:
     void run();
 
 private:
-    int threadNum_;                   /* the thread numbers in thread poll */
+    int threadNum_;                   /* the thread numbers in thread pool */
     int maxRequests_;                 /* the max requests in request queue */
     pthread_t* threads_;              /* the threads attray, the size is threadNum_ */
     std::list<T*> workQueue_;        /* the request queue */
@@ -30,5 +30,4 @@ private:
     qSem queueStat_;                  /* the request queue stat, is there task need to deal */
     bool isStop_;                     /* is stop the thread ? */
 };
-
-#endif
+#endif /*_Q_THREAD_POOL_H_*/

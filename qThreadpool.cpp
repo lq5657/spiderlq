@@ -1,10 +1,10 @@
-#include "qThreadpoll.h"
+#include "qThreadpool.h"
 #include "qThread.h"
 
 #include <cstdio>
 
 template<typename T>
-qThreadpoll<T>::qThreadpoll(int threadNum, int maxRequests) :
+qThreadpool<T>::qThreadpool(int threadNum, int maxRequests) :
     threadNum_(threadNum), maxRequests_(maxRequests), isStop_(false), threads_(NULL)
 {
     if((threadNum <=  0) || (maxRequests <= 0)){
@@ -27,14 +27,14 @@ qThreadpoll<T>::qThreadpoll(int threadNum, int maxRequests) :
 }
 
 template<typename T>
-qThreadpoll<T>::~qThreadpoll()
+qThreadpool<T>::~qThreadpool()
 {
     delete [] threads_;
     isStop_ = true;
 }
 
 template<typename T>
-bool qThreadpoll<T>::append(T* request)
+bool qThreadpool<T>::append(T* request)
 {
     queueLocker_.lock();
     if(workQueue_.size() > maxRequests_){
@@ -48,15 +48,15 @@ bool qThreadpoll<T>::append(T* request)
 }
 
 template<typename T>
-void* qThreadpoll<T>::worker(void* arg)
+void* qThreadpool<T>::worker(void* arg)
 {
-    qThreadpoll* tdPoll = (qThreadpoll*)arg;
+    qThreadpool* tdPoll = (qThreadpool*)arg;
     tdPoll->run();
     return tdPoll;
 }
 
-template<typename T>
-void qThreadpoll<T>::run()
+template<typename T> 
+void qThreadpool<T>::run()
 {
     while(!isStop_){
         queueStat_.wait();

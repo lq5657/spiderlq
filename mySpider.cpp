@@ -1,13 +1,13 @@
 #include "qURL.h"
 #include "qThread.h"
 #include "qSocket.h"
-#include "qThreadpoll.h"
+#include "qThreadpool.h"
 #include "qHttpRespond.h"
 #include "qCommon.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include <unistd.h>
 #include <sys/epoll.h>
@@ -104,9 +104,9 @@ int main()
     }
     
     /* create thread pool */
-    qThreadpoll<qHttpRespond>* pool = NULL;
+    qThreadpool<qHttpRespond>* pool = NULL;
     try{
-        pool = new qThreadpoll<qHttpRespond>;
+        pool = new qThreadpool<qHttpRespond>();
     } catch(...) {
         return 1;
     }
